@@ -35,7 +35,6 @@ subprojects {
     }
 
     apply plugin: 'java'
-    apply plugin: 'scala'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.bmuschko.docker-java-application'
@@ -46,14 +45,6 @@ subprojects {
         }
     }
 
-    dependencies {
-        compile group: 'org.scala-lang', name: "scala-compiler", version: scalaVersion
-
-        testCompile('org.scalatest:scalatest_2.12:3.0.4')
-        testCompile('org.mockito:mockito-core:2.13.0')
-        testCompile('org.pegdown:pegdown:1.6.0')
-    }
-
     task replaceTokens(type: Copy) {
         def finalBuildName = project.name + '-' + project.version
 
@@ -61,19 +52,6 @@ subprojects {
         into 'build/docker'
         filter(ReplaceTokens, tokens: ['project.build.finalName': finalBuildName])
     }
-
-
-    task scalaTest(dependsOn: ['testClasses'], type: JavaExec) {
-        main = 'org.scalatest.tools.Runner'
-        args = ['-R', "build/classes/test",
-                '-u', "build/test-results/$name",
-                '-h', "build/resports/scalaTests/$name",
-                '-o'
-        ]
-        classpath = sourceSets.test.runtimeClasspath
-    }
-
-    test.dependsOn scalaTest
 
     task copyJar(type: Copy) {
         dependsOn assemble
