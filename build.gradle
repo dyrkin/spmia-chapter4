@@ -23,7 +23,6 @@ buildscript {
 
 subprojects {
     ext {
-        scalaVersion = "2.12.4"
         springCloudVersion = "Finchley.M8"
         chapter = "chapter4"
     }
